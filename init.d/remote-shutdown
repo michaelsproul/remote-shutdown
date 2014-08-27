@@ -1,0 +1,33 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          remote-shutdown
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Remote shutdown web server.
+# Description:       Remote shutdown web server.
+### END INIT INFO
+
+PID_FILE="/var/run/remote-shutdown.pid"
+
+case "$1" in
+	start)
+		echo "Starting remote shutdown server."
+		cd /root/remote-shutdown/
+		/usr/local/bin/python3 server.py &
+		echo $! > $PID_FILE
+		;;
+	stop)
+		echo "Stopping remote shutdown server."
+		pid=$(cat $PID_FILE)
+		kill $pid
+		;;
+	*)
+		echo "Usage: remote-shutdown [start|stop]"
+		exit 1
+		;;
+esac
+
+exit 0
