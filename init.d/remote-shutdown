@@ -16,7 +16,7 @@ case "$1" in
 	start)
 		echo "Starting remote shutdown server."
 		cd /root/remote-shutdown/
-		/usr/local/bin/python3 server.py &
+		/usr/bin/env python3 server.py &
 		echo $! > $PID_FILE
 		;;
 	stop)
